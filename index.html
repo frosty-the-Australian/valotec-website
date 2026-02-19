@@ -3,241 +3,730 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Valotec</title>
+  <title>Valotac — Coming Soon</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #0a0a0f;
-      --surface: #111118;
-      --accent: #5b6fff;
-      --accent2: #a78bfa;
-      --text: #e8e8f0;
-      --muted: #6b6b80;
+      --black: #000000;
+      --white: #ffffff;
+      --grey: #888888;
+      --light-grey: #cccccc;
+      --dark-grey: #111111;
+      --mid-grey: #222222;
     }
+
+    html { scroll-behavior: smooth; }
 
     body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'DM Sans', sans-serif;
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Rajdhani', sans-serif;
       font-weight: 300;
-      min-height: 100vh;
       overflow-x: hidden;
+      cursor: none;
     }
 
-    /* Background grid */
-    body::before {
-      content: '';
+    /* ====== CUSTOM CURSOR ====== */
+    .cursor {
       position: fixed;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(91,111,255,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(91,111,255,0.04) 1px, transparent 1px);
-      background-size: 60px 60px;
+      top: 0; left: 0;
+      width: 10px; height: 10px;
+      background: white;
+      border-radius: 50%;
       pointer-events: none;
-      z-index: 0;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      mix-blend-mode: difference;
+      transition: width 0.15s ease, height 0.15s ease;
+      will-change: transform;
     }
-
-    /* Glow blob */
-    body::after {
-      content: '';
+    .cursor-ring {
       position: fixed;
-      top: -200px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 700px;
-      height: 700px;
-      background: radial-gradient(circle, rgba(91,111,255,0.15) 0%, transparent 70%);
+      top: 0; left: 0;
+      width: 34px; height: 34px;
+      border: 1px solid rgba(255,255,255,0.55);
+      border-radius: 50%;
       pointer-events: none;
-      z-index: 0;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      will-change: transform;
     }
+    a, button { cursor: none; }
 
+    /* ====== NAV ====== */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
-      padding: 24px 48px;
+      padding: 20px 48px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      z-index: 100;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
+      z-index: 500;
+      transition: background 0.4s;
+    }
+    nav.scrolled {
+      background: rgba(0,0,0,0.9);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
       backdrop-filter: blur(12px);
-      background: rgba(10,10,15,0.7);
     }
-
-    .logo {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 1.4rem;
-      letter-spacing: -0.02em;
-      color: var(--text);
+    .nav-logo {
+      height: 48px;
+      width: auto;
+      filter: drop-shadow(0 0 8px rgba(255,255,255,0.3));
     }
-
-    .logo span {
-      color: var(--accent);
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
     }
-
-    .nav-badge {
-      font-size: 0.72rem;
-      letter-spacing: 0.15em;
+    .nav-links a {
+      color: var(--light-grey);
+      text-decoration: none;
+      font-family: 'Orbitron', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: var(--muted);
-      border: 1px solid rgba(255,255,255,0.1);
-      padding: 6px 14px;
-      border-radius: 20px;
-    }
-
-    main {
+      transition: color 0.2s;
       position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0; right: 0;
+      height: 1px;
+      background: white;
+      transform: scaleX(0);
+      transition: transform 0.2s;
+      transform-origin: left;
+    }
+    .nav-links a:hover { color: white; }
+    .nav-links a:hover::after { transform: scaleX(1); }
+
+    /* ====== HERO ====== */
+    .hero {
+      position: relative;
+      height: 100vh;
+      width: 100%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hero-video {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    .hero-video video {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0.4;
+    }
+    .hero-video-placeholder {
+      width: 100%; height: 100%;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(255,255,255,0.04) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(255,255,255,0.03) 0%, transparent 50%),
+        #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .hero-video-placeholder::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 2px,
+        rgba(255,255,255,0.015) 2px, rgba(255,255,255,0.015) 4px
+      );
+    }
+    .scanline {
+      position: absolute;
+      left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+      animation: scan 4s linear infinite;
       z-index: 1;
+    }
+    @keyframes scan { 0% { top: -2px; } 100% { top: 100%; } }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.8) 100%);
+      z-index: 1;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 0 24px;
+    }
+    .hero-eyebrow {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--grey);
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: fadeUp 1s ease 0.5s forwards;
+    }
+    .hero-logo-img {
+      width: min(420px, 70vw);
+      height: auto;
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: logoReveal 1.2s ease 0.2s forwards;
+    }
+    @keyframes logoReveal {
+      0%   { opacity: 0; transform: scale(0.92); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    .hero-tagline {
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(0.7rem, 2vw, 0.9rem);
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--light-grey);
+      margin-bottom: 48px;
+      opacity: 0;
+      animation: fadeUp 1s ease 0.8s forwards;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 10px 24px;
+      font-family: 'Orbitron', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      color: var(--grey);
+      opacity: 0;
+      animation: fadeUp 1s ease 1s forwards;
+    }
+    .hero-badge .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: white;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+    .scroll-prompt {
+      position: absolute;
+      bottom: 40px;
+      left: 0; right: 0;
+      z-index: 2;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 120px 24px 60px;
-      text-align: center;
+      gap: 12px;
+      opacity: 0;
+      animation: fadeUp 1s ease 1.5s forwards;
     }
-
-    .eyebrow {
-      font-size: 0.72rem;
-      letter-spacing: 0.2em;
+    .scroll-prompt span {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.3em;
       text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 24px;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.2s forwards;
+      color: var(--grey);
     }
-
-    h1 {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: clamp(3rem, 8vw, 6.5rem);
-      line-height: 1.0;
-      letter-spacing: -0.03em;
-      max-width: 900px;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.4s forwards;
+    .scroll-line {
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(to bottom, white, transparent);
+      animation: scrollDrop 1.5s ease-in-out infinite;
     }
-
-    h1 em {
-      font-style: normal;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+    @keyframes scrollDrop {
+      0%   { transform: scaleY(0); transform-origin: top; opacity: 1; }
+      50%  { transform: scaleY(1); transform-origin: top; }
+      51%  { transform-origin: bottom; }
+      100% { transform: scaleY(0); transform-origin: bottom; opacity: 0.3; }
     }
-
-    .subtitle {
-      margin-top: 28px;
-      font-size: 1.1rem;
-      color: var(--muted);
-      max-width: 480px;
-      line-height: 1.7;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.6s forwards;
-    }
-
-    .cta-row {
-      margin-top: 48px;
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-      justify-content: center;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.8s forwards;
-    }
-
-    .btn-primary {
-      background: var(--accent);
-      color: #fff;
-      padding: 14px 32px;
-      border-radius: 6px;
-      text-decoration: none;
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: 0.9rem;
-      letter-spacing: 0.02em;
-      transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 0 30px rgba(91,111,255,0.3);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 50px rgba(91,111,255,0.5);
-    }
-
-    .btn-secondary {
-      color: var(--muted);
-      padding: 14px 32px;
-      border-radius: 6px;
-      text-decoration: none;
-      font-size: 0.9rem;
-      border: 1px solid rgba(255,255,255,0.1);
-      transition: border-color 0.2s, color 0.2s;
-    }
-
-    .btn-secondary:hover {
-      border-color: rgba(255,255,255,0.25);
-      color: var(--text);
-    }
-
-    .status-pill {
-      margin-top: 72px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(91,111,255,0.08);
-      border: 1px solid rgba(91,111,255,0.2);
-      padding: 8px 18px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      color: var(--muted);
-      opacity: 0;
-      animation: fadeUp 0.8s ease 1s forwards;
-    }
-
-    .dot {
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      background: #4ade80;
-      box-shadow: 0 0 8px #4ade80;
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
-    }
-
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
+      from { opacity: 0; transform: translateY(16px); }
       to   { opacity: 1; transform: translateY(0); }
     }
+
+    /* ====== SECTIONS ====== */
+    section {
+      padding: 120px 48px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .section-label {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--grey);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      max-width: 80px;
+      height: 1px;
+      background: var(--mid-grey);
+    }
+    .section-title {
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .hr { border: none; border-top: 1px solid var(--mid-grey); width: 100%; }
+
+    /* ====== GAMES ====== */
+    #games { padding-top: 140px; }
+    .games-grid {
+      display: flex;
+      justify-content: flex-start;
+      margin-top: 64px;
+    }
+    .game-card {
+      position: relative;
+      background: var(--dark-grey);
+      width: 220px;
+      min-height: 360px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 28px 24px;
+      overflow: hidden;
+      border: 1px solid var(--mid-grey);
+      transition: border-color 0.3s;
+    }
+    .game-card:hover { border-color: rgba(255,255,255,0.4); }
+    .game-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.3) 60%, transparent);
+    }
+    .game-card-bg {
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        45deg, rgba(255,255,255,0.01), rgba(255,255,255,0.01) 1px,
+        transparent 1px, transparent 30px
+      );
+    }
+    .game-card-qmark {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -60%);
+      font-family: 'Orbitron', monospace;
+      font-size: 6rem;
+      font-weight: 900;
+      color: rgba(255,255,255,0.06);
+      user-select: none;
+      line-height: 1;
+    }
+    .game-card-content { position: relative; z-index: 1; }
+    .game-card-status {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.5rem;
+      letter-spacing: 0.25em;
+      color: var(--grey);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .game-card-status::before { content: ''; width: 16px; height: 1px; background: var(--grey); }
+    .game-card-title {
+      font-family: 'Orbitron', monospace;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      line-height: 1.3;
+    }
+
+    /* ====== TEAM ====== */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2px;
+      margin-top: 64px;
+    }
+    .team-card {
+      background: var(--dark-grey);
+      border: 1px solid var(--mid-grey);
+      padding: 40px 32px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s;
+    }
+    .team-card:hover { border-color: rgba(255,255,255,0.3); }
+    .team-card.empty { opacity: 0.35; }
+
+    /* Avatar — circular pfp slot */
+    .team-avatar {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      border: 1px solid var(--mid-grey);
+      background: var(--mid-grey);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      overflow: hidden;
+      font-family: 'Orbitron', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.2);
+      text-align: center;
+    }
+    .team-avatar img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .team-name {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+    }
+    .team-handle {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.8rem;
+      color: var(--grey);
+      margin-bottom: 14px;
+    }
+    .team-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .team-tag {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.48rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      border: 1px solid var(--mid-grey);
+      padding: 4px 8px;
+      color: var(--grey);
+    }
+    .team-card-num {
+      position: absolute;
+      bottom: 20px; right: 24px;
+      font-family: 'Orbitron', monospace;
+      font-size: 3rem;
+      font-weight: 900;
+      color: rgba(255,255,255,0.03);
+    }
+
+    /* ====== FAQ ====== */
+    .faq-list { margin-top: 64px; border-top: 1px solid var(--mid-grey); }
+    .faq-item { border-bottom: 1px solid var(--mid-grey); }
+    .faq-question {
+      width: 100%;
+      background: none;
+      border: none;
+      color: white;
+      text-align: left;
+      padding: 28px 0;
+      font-family: 'Orbitron', monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      cursor: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      transition: color 0.2s;
+    }
+    .faq-question:hover { color: var(--light-grey); }
+    .faq-icon {
+      font-size: 1.2rem;
+      font-weight: 300;
+      transition: transform 0.3s;
+      flex-shrink: 0;
+      color: var(--grey);
+    }
+    .faq-item.open .faq-icon { transform: rotate(45deg); color: white; }
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+    .faq-item.open .faq-answer { max-height: 300px; }
+    .faq-answer p {
+      color: var(--grey);
+      font-size: 0.95rem;
+      line-height: 1.8;
+      padding-bottom: 28px;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 400;
+    }
+    .faq-answer a { color: white; }
+
+    /* ====== FOOTER ====== */
+    footer {
+      border-top: 1px solid var(--mid-grey);
+      padding: 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+    .footer-logo { height: 36px; }
+    .footer-links { display: flex; gap: 28px; list-style: none; }
+    .footer-links a {
+      color: var(--grey);
+      text-decoration: none;
+      font-family: 'Orbitron', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: white; }
+    .footer-copy { font-size: 0.7rem; color: var(--grey); font-family: 'Orbitron', monospace; letter-spacing: 0.1em; }
   </style>
 </head>
 <body>
 
-  <nav>
-    <div class="logo">Valo<span>tec</span></div>
-    <div class="nav-badge">Coming Soon</div>
+  <!-- CUSTOM CURSOR -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <img class="nav-logo" src="ValotacLogo.png" alt="Valotac" />
+    <ul class="nav-links">
+      <li><a href="#games">Games</a></li>
+      <li><a href="#team">Team</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
   </nav>
 
-  <main>
-    <p class="eyebrow">Test Deployment — Everything is Working</p>
-    <h1>Built for<br /><em>what's next.</em></h1>
-    <p class="subtitle">Valotec is gearing up. This page confirms your site is live on Cloudflare Pages with your custom domain.</p>
-    <div class="cta-row">
-      <a href="#" class="btn-primary">Get Started</a>
-      <a href="#" class="btn-secondary">Learn More →</a>
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-video">
+      <!-- Swap in your video: uncomment below and remove the placeholder div -->
+      <!-- <video autoplay muted loop playsinline src="hero.mp4"></video> -->
+      <div class="hero-video-placeholder">
+        <div class="scanline"></div>
+      </div>
     </div>
-    <div class="status-pill">
-      <span class="dot"></span>
-      Site is live and deployed
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">// VR Game Studio — Meta Quest</p>
+      <img class="hero-logo-img" src="ValotacLogo.png" alt="Valotac" />
+      <p class="hero-tagline">Forging worlds. Defining play.</p>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Coming Soon
+      </div>
     </div>
-  </main>
+    <div class="scroll-prompt">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </div>
+
+  <hr class="hr" />
+
+  <!-- GAMES -->
+  <section id="games">
+    <div class="section-label reveal">Our Games</div>
+    <h2 class="section-title reveal reveal-delay-1">Games in<br/>Development</h2>
+    <div class="games-grid">
+      <div class="game-card reveal reveal-delay-1">
+        <div class="game-card-bg"></div>
+        <div class="game-card-qmark">?</div>
+        <div class="game-card-content">
+          <div class="game-card-status">Coming Soon</div>
+          <div class="game-card-title">???</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="hr" style="max-width:1200px;margin:0 auto;padding:0 48px;box-sizing:content-box;" />
+
+  <!-- TEAM -->
+  <section id="team">
+    <div class="section-label reveal">The People</div>
+    <h2 class="section-title reveal reveal-delay-1">Meet the Team</h2>
+    <div class="team-grid">
+
+      <!-- CARD 1: Frosty -->
+      <div class="team-card reveal reveal-delay-1">
+        <div class="team-avatar">
+          <!-- Upload your pfp as frosty-pfp.png and it will appear here -->
+          <img src="frosty-pfp.png" alt="Frosty" onerror="this.style.display='none';this.parentElement.innerHTML='PFP';" />
+        </div>
+        <div class="team-name">Frosty</div>
+        <div class="team-handle">🇦🇺 Co-Founder</div>
+        <div class="team-tags">
+          <span class="team-tag">Community</span>
+          <span class="team-tag">Meta</span>
+          <span class="team-tag">Strategy</span>
+          <span class="team-tag">Misc</span>
+        </div>
+        <div class="team-card-num">01</div>
+      </div>
+
+      <!-- CARD 2: Powerrrr -->
+      <div class="team-card reveal reveal-delay-2">
+        <div class="team-avatar">
+          <!-- Upload your pfp as powerrrr-pfp.png and it will appear here -->
+          <img src="powerrrr-pfp.png" alt="Powerrrr" onerror="this.style.display='none';this.parentElement.innerHTML='PFP';" />
+        </div>
+        <div class="team-name">Powerrrr</div>
+        <div class="team-handle">Co-Founder</div>
+        <div class="team-tags">
+          <span class="team-tag">Developer</span>
+          <span class="team-tag">Meta</span>
+          <span class="team-tag">Backend</span>
+        </div>
+        <div class="team-card-num">02</div>
+      </div>
+
+      <!-- CARD 3: Empty slot -->
+      <div class="team-card empty reveal reveal-delay-3">
+        <div class="team-avatar">???</div>
+        <div class="team-name">???</div>
+        <div class="team-handle">Coming Soon</div>
+        <div class="team-tags">
+          <span class="team-tag">TBA</span>
+        </div>
+        <div class="team-card-num">03</div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="hr" style="max-width:1200px;margin:0 auto;padding:0 48px;box-sizing:content-box;" />
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="section-label reveal">Questions</div>
+    <h2 class="section-title reveal reveal-delay-1">FAQ</h2>
+    <div class="faq-list reveal reveal-delay-2">
+
+      <div class="faq-item">
+        <button class="faq-question">What is Valotac?<span class="faq-icon">+</span></button>
+        <div class="faq-answer">
+          <p>Valotac is an independent VR game studio building bold, immersive experiences exclusively for the Meta Quest platform. We're a small passionate team building worlds we'd want to live in.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">When will your games release?<span class="faq-icon">+</span></button>
+        <div class="faq-answer">
+          <p>We don't have confirmed release dates yet — we're committed to shipping when our games are ready, not before. Follow us on social media for updates as they happen.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">What platforms are you on?<span class="faq-icon">+</span></button>
+        <div class="faq-answer">
+          <p>We develop exclusively for Meta Quest. Our games are built from the ground up for VR — no ports, no compromises.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">Can I create fan content about your games?<span class="faq-icon">+</span></button>
+        <div class="faq-answer">
+          <p>Yes — we love fan creativity! Please review our <a href="fan-content-policy.html">Fan Content Policy</a> for guidelines on what's allowed and how to credit us properly.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">How can I get in touch?<span class="faq-icon">+</span></button>
+        <div class="faq-answer">
+          <p>You can reach us at contact&#64;valotac.com — we do our best to respond, though response times may vary during heavy development periods.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <img class="footer-logo" src="ValotacLogo.png" alt="Valotac" />
+    <ul class="footer-links">
+      <li><a href="privacy-policy.html">Privacy Policy</a></li>
+      <li><a href="terms-of-service.html">Terms of Service</a></li>
+      <li><a href="fan-content-policy.html">Fan Content Policy</a></li>
+    </ul>
+    <span class="footer-copy">&copy; 2025 Valotac. All Rights Reserved.</span>
+  </footer>
+
+  <script>
+    // ── Custom cursor ──
+    const cursor = document.getElementById('cursor');
+    const ring   = document.getElementById('cursorRing');
+    let mx = -100, my = -100;   // mouse position
+    let rx = -100, ry = -100;   // ring position (lagged)
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX;
+      my = e.clientY;
+      // Dot follows instantly via CSS left/top
+      cursor.style.left = mx + 'px';
+      cursor.style.top  = my + 'px';
+    });
+
+    // Ring follows with smooth lag via rAF
+    (function animateRing() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px';
+      ring.style.top  = ry + 'px';
+      requestAnimationFrame(animateRing);
+    })();
+
+    // ── Nav scroll effect ──
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // ── Scroll reveal ──
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // ── FAQ accordion ──
+    document.querySelectorAll('.faq-question').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item   = btn.parentElement;
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+        if (!isOpen) item.classList.add('open');
+      });
+    });
+  </script>
 
 </body>
 </html>
