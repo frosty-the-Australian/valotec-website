@@ -821,6 +821,70 @@
     @keyframes pulseBlack { 0%,100%{opacity:1} 50%{opacity:0.25} }
     nav { top: 34px; }
     .hero { padding-top: 34px; }
+
+    /* ====== ABOUT US ====== */
+    .about-us {
+      margin-top: 56px;
+      margin-bottom: 48px;
+      border: 1px solid var(--border);
+      background: var(--dark-grey);
+    }
+    .about-us-inner {
+      display: grid;
+      grid-template-columns: auto 1px 1fr;
+      gap: 0;
+      align-items: stretch;
+    }
+    @media (max-width: 768px) {
+      .about-us-inner {
+        grid-template-columns: 1fr;
+      }
+      .about-divider { display: none; }
+    }
+    .about-block {
+      padding: 36px 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+    .about-label {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.5rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+    }
+    .about-year {
+      font-family: 'Orbitron', monospace;
+      font-size: 2.2rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      color: white;
+      line-height: 1;
+    }
+    .about-divider {
+      width: 1px;
+      background: var(--border);
+      align-self: stretch;
+    }
+    .about-text {
+      padding: 36px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      justify-content: center;
+    }
+    .about-text p {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.95rem;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.55);
+      font-weight: 400;
+    }
+
 </style>
 </head>
 <body>
@@ -882,8 +946,8 @@
   <!-- NAV -->
   <nav id="navbar">
     <ul class="nav-links">
+      <li><a href="#social">Find Us</a></li>
       <li><a href="#games">Games</a></li>
-      <li><a href="#social">Social</a></li>
       <li><a href="#team">Team</a></li>
       <li><a href="#faq">FAQ</a></li>
     </ul>
@@ -915,22 +979,6 @@
   </div>
 
   <hr class="hr" />
-
-  <!-- GAMES -->
-  <section id="games">
-    <div class="section-label reveal">Our Games</div>
-    <h2 class="section-title reveal reveal-delay-1">Games in<br/>Development</h2>
-    <div class="games-grid">
-      <div class="game-card reveal reveal-delay-1">
-        <div class="game-card-bg"></div>
-        <div class="game-card-qmark">?</div>
-        <div class="game-card-content">
-          <div class="game-card-status">Coming Soon</div>
-          <div class="game-card-title">???</div>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <hr class="hr" />
 
@@ -979,12 +1027,45 @@
     </div>
   </section>
 
+  <!-- GAMES -->
+  <section id="games">
+    <div class="section-label reveal">Our Games</div>
+    <h2 class="section-title reveal reveal-delay-1">Games in<br/>Development</h2>
+    <div class="games-grid">
+      <div class="game-card reveal reveal-delay-1">
+        <div class="game-card-bg"></div>
+        <div class="game-card-qmark">?</div>
+        <div class="game-card-content">
+          <div class="game-card-status">Coming Soon</div>
+          <div class="game-card-title">???</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
   <hr class="hr" />
 
   <!-- TEAM -->
   <section id="team">
     <div class="section-label reveal">The People</div>
     <h2 class="section-title reveal reveal-delay-1">Meet the Team</h2>
+
+    <!-- ABOUT US -->
+    <div class="about-us reveal reveal-delay-1">
+      <div class="about-us-inner">
+        <div class="about-block">
+          <div class="about-label">Est.</div>
+          <div class="about-year">2026</div>
+        </div>
+        <div class="about-divider"></div>
+        <div class="about-text">
+          <p>Valotac is an independent VR studio built for the next generation of players. We make consumer-first games — wacky, scary, fun — designed to pull Gen Z and Gen Alpha into worlds they actually want to be in.</p>
+          <p>Our focus is on immersive experiences that tap into the trends, humour, and interests of our generation. VR isn't just a platform to us, it's the medium through which we can improve how we communicate and socialise together.</p>
+        </div>
+      </div>
+    </div>
+
     <div class="team-grid">
 
       <!-- CARD 1: Frosty -->
