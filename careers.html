@@ -355,8 +355,41 @@
   <!-- OPEN ROLES -->
   <div class="roles-section">
     <h2>// Open Positions</h2>
-    <div class="no-roles">
-      <p>No positions open right now</p>
+    <!-- Role: Commission 3D Modeler -->
+    <div class="role-card" onclick="toggleRole(this)">
+      <div class="role-info">
+        <div class="role-title">Commission 3D Modeler</div>
+        <div class="role-tags">
+          <span class="role-tag green">Open</span>
+          <span class="role-tag">Commission</span>
+          <span class="role-tag">Remote</span>
+          <span class="role-tag">Blender</span>
+          <span class="role-tag">Substance Painter</span>
+        </div>
+      </div>
+      <span class="role-arrow">→</span>
+    </div>
+    <div class="role-body">
+      <h4>About the Role</h4>
+      <p>We're looking for a Commission 3D Modeler to create assets for Goblin Game© on Meta Quest. You'll be working on characters, props, and environment pieces — modelled and textured to run well on standalone VR hardware.</p>
+      <h4>What You'll Do</h4>
+      <ul>
+        <li>Model game-ready 3D assets in Blender</li>
+        <li>Texture assets using Substance Painter</li>
+        <li>Optimise meshes and textures for Meta Quest performance budgets</li>
+        <li>Export assets in formats compatible with Unity</li>
+        <li>Work from briefs provided by the team and iterate based on feedback</li>
+      </ul>
+      <h4>What We're Looking For</h4>
+      <ul>
+        <li>Proficiency in Blender and Substance Painter</li>
+        <li>Understanding of PBR texturing workflows</li>
+        <li>Experience with low-to-mid poly game asset creation</li>
+        <li>Ability to hit deadlines and communicate progress</li>
+        <li>Portfolio showing 3D modelling and texturing work</li>
+      </ul>
+      <h4>Compensation</h4>
+      <p>This is a paid commission role — rates are negotiated per asset or per project scope. Get in touch with your portfolio and rates.</p>
     </div>
   </div>
 
@@ -387,7 +420,9 @@
       <div class="form-field">
         <label for="role">Applying For</label>
         <select id="role" name="role" required>
-          <option value="General Application" selected>General Application</option>
+          <option value="" disabled selected>Select a position</option>
+          <option value="Commission 3D Modeler">Commission 3D Modeler</option>
+          <option value="General Application">General Application</option>
         </select>
       </div>
 
